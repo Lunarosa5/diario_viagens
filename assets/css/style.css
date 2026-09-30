@@ -1,0 +1,120 @@
+/* Zerando margens e configurando a fonte */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Fundo da tela */
+body {
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Tela index.php */
+.cartao-welcome {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 350px;
+    border: 1px solid #ccc;
+}
+
+.caixa-sobre {
+    background: #e6e6e6;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.grupo-botoes {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* Estrutura dividida ao meio (Canva) */
+.container-dividido {
+    display: flex;
+    width: 750px;
+    height: 420px;
+    background: #ffffff;
+    border: 1px solid #000;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.lado-formulario {
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.lado-imagem {
+    flex: 1;
+    border-left: 1px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fafafa;
+}
+
+.caixa-imagem {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Campos de entrada e botões */
+.campo {
+    margin-bottom: 15px;
+}
+
+.campo label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.campo input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #000;
+    border-radius: 15px;
+}
+
+.botao {
+    padding: 8px 18px;
+    border-radius: 15px;
+    border: 1px solid #000;
+    text-decoration: none;
+    color: #000;
+    background: #e0e0e0;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.botao-principal {
+    background: #d4d4d4;
+}
+
+.texto-troca {
+    margin-top: 15px;
+    font-size: 12px;
+}
+
+/* Mensagens de sucesso/erro */
+.alerta {
+    padding: 8px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    border-radius: 5px;
+}
+.sucesso { background-color: #d4edda; color: #155724; }
+.erro { background-color: #f8d7da; color: #721c24; }

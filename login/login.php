@@ -1,42 +1,7 @@
-<?php
-// -----------------------------------------------------------------------------
-// ARQUIVO: login/login.php
-// OBJETIVO: Interface de login, verificação de senha e criação da Sessão
-// -----------------------------------------------------------------------------
-
-// Inicia a sessão para podermos armazenar os dados do utilizador autenticado
-session_start();
+<?php // login.php: interface de login, verificação de senha e criação da Sessão
 
 // Inclui as funções centralizadas do sistema
 require_once __DIR__ . '/../includes/functions.php';
-
-$mensagem = "";
-
-// Processa a validação quando o utilizador clica em "Entrar"
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $email = $_POST['email'];
-    $senha = $_POST['senha'];
-
-    if (!empty($email) && !empty($senha)) {
-        // Usa a função consulta_user() para procurar o utilizador na BD pelo e-mail
-        $usuario = consulta_user($conexao, $email);
-
-        // Se encontrou o utilizador E a senha bate com a hash criptografada
-        if ($usuario && password_verify($senha, $usuario['senha'])) {
-            // Guarda as informações essenciais na sessão do PHP
-            $_SESSION['usuario_id']   = $usuario['id'];
-            $_SESSION['usuario_nome'] = $usuario['nome'];
-
-            // Redireciona para o feed de viagens na pasta pages/
-            header("Location: ../pages/select.php");
-            exit();
-        } else {
-            $mensagem = "<p class='alerta erro'>E-mail ou senha incorretos!</p>";
-        }
-    } else {
-        $mensagem = "<p class='alerta erro'>Preencha e-mail e senha!</p>";
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -51,15 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 <body class="fundo">
 
-    <!-- Contentor com visual dividido ao meio (Canva) -->
-    <div class="container-dividido">
+    <div class="lado-form">
 
         <!-- Lado Esquerdo: Formulário de Login -->
-        <div class="lado-formulario">
+        <div class="lado-form">
             <h2>Faça seu login</h2>
-
-            <!-- Exibe alertas de erro se existirem -->
-            <?php if (!empty($mensagem)) echo $mensagem; ?>
 
             <form action="" method="POST">
                 <div class="campo">
@@ -75,8 +36,33 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 <input type="submit" value="Entrar" class="botao-submit">
             </form>
 
-           <p class="texto-troca">Já tem uma conta? <a href="login.php">Faça login</a></p>
-            
+            <?php
+            // Quando o formulário é enviado por POST, executa a função consulta_user
+            if ($_SERVER['REQUEST_METHOD'] == "POST") {
+                $usuario = consulta_user($conexao, $_POST['email']);
+
+                // Verifica o usuário e senha coma função "passowrd_verify", que compara a senha e o hash.
+                if ($usuario && password_verify($_POST['senha'], $usuario['senha'])) {
+                    // Se tudo ocorrer bem, a sessão do PHP se inicia, permitindo que o servidor se "lembre" do usuário enquanto ele usa o site
+                    session_start();
+
+                    $_SESSION['id_usuario'] = $usuario['id'];
+                    // Salva o ID do usuário na sessão para manter o login ativo nas outras páginas
+
+
+                    // Após o usuário realizar o logjn, ele é redirecionado para a página de início do sistema
+                    header("Location: ../pages/inicio.php");
+                    exit();
+                } else {
+                    
+                    // Caso alguma das informações estiverem incorretas, uma mensagem é exibida
+                    echo "<p class='alerta erro'>Usuário ou senha inválidos.</p>";
+                }
+            }
+            ?>
+
+            <p class="texto-cadastrar">Ainda não tem uma conta? <a href="cadastro.php">Cadastre-se</a></p>
+
             <!-- Botão de Voltar para a Página Inicial -->
             <p class="texto-voltar"><a href="../index.php"> Voltar para a tela inicial</a></p>
         </div>

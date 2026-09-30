@@ -1,0 +1,34 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$nome_exibicao = isset($_SESSION['usuario_nome']) ? $_SESSION['usuario_nome'] : 'usuário';
+?>
+
+<header class="cabecalho">
+    <div class="container-header">
+
+        <!-- Logo e opções -->
+        <nav class="menu-navegacao">
+            <div class="logo">
+                <img src="" alt="Logo Travely" class="img-logo">
+                <strong>Travely</strong>
+            </div>
+
+            <div class="opcoes">
+                <a href="inicio.php">Início</a>
+                <a href="adicionar.php">Adicionar</a>
+                <a href="viagens.php">Viagens</a>
+                <a href="pesquisar.php">Pesquisar</a>
+                <a href="excluir.php">Excluir</a>
+                <a href="atualizar.php">Atualizar</a>
+            </div>
+
+            <div class="perfil">
+                <a href="perfil.php" class="perfil-usuario">Perfil</a>
+                <a href="../login/logout.php" class="sair">Sair</a>
+            </div>
+        </nav>
+    </div>
+</header>

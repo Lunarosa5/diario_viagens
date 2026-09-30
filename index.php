@@ -20,7 +20,7 @@
         <!-- Caixa sobre o sistema -->
         <div class="caixa-sobre">
             <h3>Sobre</h3>
-            <p>Bem-vindo ao Travely! Guarde suas memórias de viagens, fotos e relatos em um só lugar.</p>
+            <p>Seja muito bem-vindo(a) ao Travely! <br> Guarde suas memórias de viagens, fotos e relatos em um só lugar.</p>
         </div>
 
         <!-- Botões para navegar até as páginas de Login e Cadastro -->

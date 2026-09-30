@@ -2,10 +2,10 @@
 // connect.php: estabelece a conexão entre o servidor PHP e o banco PostgreSQL
 
 // Define os dados de acesso ao banco de dados
-$host = "localhost"; // Endereço do servidor onde o banco está (IP)
+$host = "192.168.10.59"; // Endereço do servidor onde o banco está (IP)
 $port   = "5432";           // Porta padrão do PostgreSQL
-$dbname = "diario_viagens"; // O nome do seu banco de dados
-$user = "postgres"; // Nome do usuário do PostgreSQL
+$dbname = "travely"; // O nome do seu banco de dados
+$user = "travely"; // Nome do usuário do PostgreSQL
 $pass = "12345"; // Senha do usuário do PostgreSQL
 
 

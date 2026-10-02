@@ -165,23 +165,23 @@ function relatorio($conexao)
 }
 
 
+function pesquisar($conexao, $destino)
 
-
-
-
-
-
-
-// FUNÇÕES DE GESTÃO DE VIAGENS (CRUD QUE FICARÁ NA PASTA PAGES/)
-
-
-
-/**
- * Lista todas as viagens cadastradas do usuário logado
- */
-function relatorio_viagens($conexao, $usuario_id)
 {
-    $sql = "SELECT * FROM viagens WHERE usuario_id = :usuario_id ORDER BY id DESC";
+
+    // Pega o ID do usuário logado da sessão
+
+    $id_usuario = $_SESSION['id_usuario'];
+
+
+
+    // Seleciona todas as viagens do usuário logado, ordenadas pela data de início em ordem decrescente (mais recentes primeiro)
+
+    $sql = "SELECT * FROM viagens WHERE destino = :destino";
+
+
+
+    // Tenta executar a query (try) e trata possíveis erros (catch). Se a execução for bem-sucedida, exibe as viagens; caso contrário, exibe uma mensagem de erro.
 
     try {
         $stmt = $conexao->prepare($sql);
@@ -191,13 +191,22 @@ function relatorio_viagens($conexao, $usuario_id)
         $viagens = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $viagens;
     } catch (PDOException $e) {
-        echo "<p class='alerta erro'>Erro ao buscar viagens: " . $e->getMessage() . "</p>";
+
+        echo "<p>Erro ao exibir viagens.</p>";
+
     }
+
 }
 
-/**
- * Apaga uma viagem específica confirmando o ID do usuário
- */
+
+
+
+// FUNÇÕES DE GESTÃO DE VIAGENS (CRUD QUE FICARÁ NA PASTA PAGES/)
+
+
+
+
+
 function apagar_viagem($conexao, $id, $usuario_id)
 {
     $sql = "DELETE FROM viagens WHERE id = :id AND usuario_id = :usuario_id";

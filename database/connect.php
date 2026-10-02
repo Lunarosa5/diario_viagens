@@ -24,3 +24,5 @@ try {
     // Caso ocorra algum erro na conexão (senha incorreta, banco fora do ar...), exibe a mensagem de erro.
     echo "Erro: " . $e->getMessage();
 }
+
+?>

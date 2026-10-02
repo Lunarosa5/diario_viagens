@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/functions.php';
-require_once __DIR__ . '/../login/verifica_user.php'; 
+require_once __DIR__ . '/../login/verifica_user.php';
+require_once __DIR__ . '/../database/connect.php';
 ?>
 
 <!DOCTYPE html>
@@ -33,7 +34,7 @@ require_once __DIR__ . '/../login/verifica_user.php';
             <textarea name="relato" id="relato" rows="4" cols="50" required></textarea><br><br>
 
             <label for="imagem">Adicione fotos da viagem: </label>
-            <input type="file" name="imagem" id="imagem" accept="image/*" multiple><br><br>
+            <input type="file" name="imagem" id="imagem" accept="image/*"><br><br>
 
             <label for="avaliacao">De uma nota de 0 à 5: </label>
             <input type="number" name="avaliacao" id="avaliacao" min="0" max="5" required><br><br>

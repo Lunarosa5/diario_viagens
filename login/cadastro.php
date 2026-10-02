@@ -1,7 +1,10 @@
 <?php
 // cadastro.php: interface de cadastro
 
-// Inclui o ficheiro de funções centralizadas (que já puxa a conexão PDO)
+session_start();
+
+// Inclui o arquivo das funções e do banco de dados
+require_once __DIR__ . '/../database/connect.php';
 require_once __DIR__ . '/../includes/functions.php';
 ?>
 
@@ -18,7 +21,8 @@ require_once __DIR__ . '/../includes/functions.php';
 
 <body class="fundo">
     <div class="lado-form">
-        <!-- Lado Esquerdo: Formulário de Cadastro -->
+
+        <!-- Formulário de Cadastro -->
         <div class="lado-form">
             <h2>Faça seu cadastro</h2>
 
@@ -41,16 +45,15 @@ require_once __DIR__ . '/../includes/functions.php';
                 <input type="submit" value="Cadastrar" class="botao-submit">
             </form>
 
-
             <?php
-            // Quando o formulário é enviado por POST, executa a função cadastrar_user
+            // Quando o formulário é enviado por POST
             if ($_SERVER['REQUEST_METHOD'] == "POST") {
-                cadastrar_user($conexao, $_POST['nome'], $_POST['email'], $_POST['senha']);
-
-            // Após o usuário realizar seu cadastro, ele é redirecionado para a página de início do sistema
-            header('Location: /pages/inicio.php');
+                // Executa a função. Se der certo (true), redireciona para a tela de início
+                if (cadastrar_user($conexao, $_POST['nome'], $_POST['email'], $_POST['senha'])) {
+                    header("Location: ../pages/inicio.php");
+                    exit();
+                }
             }
-
             ?>
 
             <!-- Botão de Voltar para a Página Inicial -->

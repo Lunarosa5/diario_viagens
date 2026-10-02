@@ -72,9 +72,9 @@ if ($dados['media_notas']) {
                             </div>
 
                             <div class="info-viagem">
-                                <p><strong>Local:</strong> <?php echo htmlspecialchars($viagem['local']); ?></p>
+                                <p><strong>Local:</strong> <?php echo ($viagem['destino']); ?></p>
                                 <p><strong>Data:</strong> <?php echo date('d/m/Y', strtotime($viagem['data_inicio'])); ?></p>
-                                <p><strong>Nota:</strong> <?php echo $viagem['nota']; ?></p>
+                                <p><strong>Nota:</strong> <?php echo $viagem['avaliacao']; ?></p>
 
                                 <a href="viagens.php?id=<?php echo $viagem['id']; ?>" class="btn-ver-mais">Ver mais</a>
                             </div>

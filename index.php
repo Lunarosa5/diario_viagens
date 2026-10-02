@@ -8,8 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travely</title>
-    <!-- Importa o arquivo de estilo CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    
 </head>
 <body class="fundo">
 
@@ -19,7 +18,6 @@
         
         <!-- Caixa sobre o sistema -->
         <div class="caixa-sobre">
-            <h3>Sobre</h3>
             <p>Seja muito bem-vindo(a) ao Travely! <br> Guarde suas memórias de viagens, fotos e relatos em um só lugar.</p>
         </div>
 

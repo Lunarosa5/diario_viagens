@@ -18,7 +18,7 @@ require_once __DIR__ . '/../includes/functions.php';
 
     <div class="lado-form">
 
-        <!-- Lado Esquerdo: Formulário de Login -->
+        <!-- Formulário de Login -->
         <div class="lado-form">
             <h2>Faça seu login</h2>
 
@@ -41,7 +41,7 @@ require_once __DIR__ . '/../includes/functions.php';
             if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 $usuario = consulta_user($conexao, $_POST['email']);
 
-                // Verifica o usuário e senha coma função "passowrd_verify", que compara a senha e o hash.
+                // Verifica o usuário e senha coma função "password_verify", que compara a senha e o hash.
                 if ($usuario && password_verify($_POST['senha'], $usuario['senha'])) {
                     // Se tudo ocorrer bem, a sessão do PHP se inicia, permitindo que o servidor se "lembre" do usuário enquanto ele usa o site
                     session_start();
@@ -53,6 +53,8 @@ require_once __DIR__ . '/../includes/functions.php';
                     // Após o usuário realizar o logjn, ele é redirecionado para a página de início do sistema
                     header("Location: ../pages/inicio.php");
                     exit();
+                    // exit() é usado para garantir que o script seja encerrado após o redirecionamento, evitando que qualquer código seja executado a mais.
+
                 } else {
                     
                     // Caso alguma das informações estiverem incorretas, uma mensagem é exibida
@@ -77,5 +79,4 @@ require_once __DIR__ . '/../includes/functions.php';
     </div>
 
 </body>
-
 </html>

@@ -30,5 +30,6 @@ $nome_exibicao = isset($_SESSION['usuario_nome']) ? $_SESSION['usuario_nome'] : 
                 <a href="../login/logout.php" class="sair">Sair</a>
             </div>
         </nav>
+        <hr>
     </div>
 </header>

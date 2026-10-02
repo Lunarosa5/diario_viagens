@@ -121,7 +121,7 @@ function cadastrar_viagem($conexao, $id_usuario, $titulo, $destino, $data_inicio
     // RETURNING id é necessário no PostgreSQL para capturar o ID da viagem recém-criada
     $sql = "INSERT INTO viagens (id_usuario, titulo, destino, data_inicio, data_fim, relato, avaliacao) 
             VALUES (:id_usuario, :titulo, :destino, :data_inicio, :data_fim, :relato, :avaliacao) RETURNING id";
-    
+
     // A função tenta executar a query, com o try, e trata possíveis erros, com o catch. Se a execução for bem-sucedida, retorna true, caso contrário, retorna false.
     try {
         $stmt = $conexao->prepare($sql);
@@ -132,7 +132,7 @@ function cadastrar_viagem($conexao, $id_usuario, $titulo, $destino, $data_inicio
         $stmt->bindParam(':data_fim', $data_fim);
         $stmt->bindParam(':relato', $relato);
         $stmt->bindParam(':avaliacao', $avaliacao);
-         
+
         // Executa a query para inserir a nova viagem no banco de dados. Se a execução for bem-sucedida, retorna o ID da viagem criada, caso contrário, retorna false, mostrando o erro ocorrido.
         if ($stmt->execute()) {
             $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -145,68 +145,115 @@ function cadastrar_viagem($conexao, $id_usuario, $titulo, $destino, $data_inicio
     }
 }
 
-// rela
+// relatorio: Função para possibilitar o usuário de ver todas suas viagens relatadas
 function relatorio($conexao)
 {
-    $sql = "SELECT * FROM viagens ORDER BY destino DESC";
-
-    try {
-        $stmt = $conexao->prepare($sql);
-        $stmt->execute();
-
-        $viagens = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        foreach ($viagens as $viagem) {
-            
-        }
-    } catch (PDOException $e) {
-        echo "Erro: " . $e->getMessage();
-    }
-}
-
-
-function pesquisar($conexao, $destino)
-
-{
-
     // Pega o ID do usuário logado da sessão
-
     $id_usuario = $_SESSION['id_usuario'];
 
-
-
     // Seleciona todas as viagens do usuário logado, ordenadas pela data de início em ordem decrescente (mais recentes primeiro)
-
-    $sql = "SELECT * FROM viagens WHERE destino = :destino";
-
-
+    $sql = "SELECT * FROM viagens WHERE id_usuario = :id_usuario ORDER BY data_inicio DESC";
 
     // Tenta executar a query (try) e trata possíveis erros (catch). Se a execução for bem-sucedida, exibe as viagens; caso contrário, exibe uma mensagem de erro.
-
     try {
         $stmt = $conexao->prepare($sql);
-        $stmt->bindParam(":usuario_id", $usuario_id);
+        $stmt->bindParam(':id_usuario', $id_usuario);
+        $stmt->execute();
+        $viagens = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Se não houver viagens cadastradas, exibe uma mensagem informando que o usuário ainda não tem viagens cadastradas e retorna da função.
+        if (empty($viagens)) {
+            echo "<p>Você ainda não tem viagens cadastradas.</p>";
+            return;
+        }
+
+        // Exibe cada viagem em um espaço, mostrando o destino, a data de início e a nota. Também inclui um link para ver mais detalhes da viagem.
+        foreach ($viagens as $viagem) {
+?>
+            <div class="espaço-viagem">
+                <div class="caixa-imagem">
+                    <!-- Espaço reservado para a imagem -->
+                    <span>Imagem</span>
+                </div>
+
+                <div class="info-viagem">
+                    <?php echo "<h3>" . $viagem['destino'] . "</h3>"; ?>
+                    <p>Data: <?= date('d/m/Y', strtotime($viagem['data_inicio'])); ?></p>
+                    <p>Nota: <?= $viagem['avaliacao']; ?></p>
+
+                    <a href="detalhes_viagem.php?id=<?php echo $viagem['id']; ?>" class="ver-mais">Ver mais</a>
+                    <?php echo "<hr>"; ?>
+                </div>
+            </div>
+        <?php
+        }
+    } catch (PDOException $e) {
+        echo "<p>Erro ao exibir viagens.</p>";
+    }
+}
+
+// pesquisar: Função para pesquisar viagens por destino
+function pesquisar($conexao, $destino)
+{
+    $id_usuario = $_SESSION['id_usuario'];
+
+    $sql = "SELECT * FROM viagens WHERE id_usuario = :id_usuario AND destino ILIKE :destino ORDER BY data_inicio DESC";
+    // ILIKE é um comando usado para buscar textos ignorando a diferença entre letras maiúsculas e minúsculas
+
+    // Tenta executar a query (try) e trata possíveis erros (catch). Se a execução for bem-sucedida, retorna as viagens encontradas, caso contrário, exibe uma mensagem de erro e retorna um array vazio.
+    try {
+        $stmt = $conexao->prepare($sql);
+        $stmt->bindParam(':id_usuario', $id_usuario);
+        $stmt->bindValue(':destino', $destino);
         $stmt->execute();
 
-        $viagens = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $viagens;
+        $viagens = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        foreach ($viagens as $viagem) {
+        ?>
+            <div class="espaço-viagem">
+                <div class="caixa-imagem">
+                    <!-- Espaço reservado para a imagem -->
+                    <span>Imagem</span>
+                </div>
+
+                <div class="info-viagem">
+                    <?php echo "<h3>" . $viagem['destino'] . "</h3>"; ?>
+                    <p>Data: <?= date('d/m/Y', strtotime($viagem['data_inicio'])); ?></p>
+                    <p>Nota: <?= $viagem['avaliacao']; ?></p>
+
+                    <a href="detalhes_viagem.php?id=<?php echo $viagem['id']; ?>" class="ver-mais">Ver mais</a>
+                    <?php echo "<hr>"; ?>
+                </div>
+            </div>
+<?php
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
     } catch (PDOException $e) {
-
-        echo "<p>Erro ao exibir viagens.</p>";
-
+        echo "<p>Erro ao pesquisar viagens: " . $e->getMessage() . "</p>";
+        return [];
     }
-
 }
 
 
 
 
-// FUNÇÕES DE GESTÃO DE VIAGENS (CRUD QUE FICARÁ NA PASTA PAGES/)
 
 
 
 
 
+
+
+
+
+
+
+
+/**
+ * Apaga uma viagem específica confirmando o ID do usuário
+ */
 function apagar_viagem($conexao, $id, $usuario_id)
 {
     $sql = "DELETE FROM viagens WHERE id = :id AND usuario_id = :usuario_id";
@@ -222,3 +269,4 @@ function apagar_viagem($conexao, $id, $usuario_id)
         echo "<p class='alerta erro'>Erro ao apagar viagem: " . $e->getMessage() . "</p>";
     }
 }
+?>

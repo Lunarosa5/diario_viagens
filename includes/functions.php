@@ -207,7 +207,8 @@ function pesquisar($conexao, $destino)
         $stmt->bindValue(':destino', $destino);
         $stmt->execute();
 
-        $viagens = $stmt->fetch(PDO::FETCH_ASSOC);
+        // Pega todas as viagens encontradas e exibe cada uma em um espaço, mostrando o destino, a data de início e a nota. Também inclui um link para ver mais detalhes da viagem. 
+        $viagens = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($viagens as $viagem) {
         ?>
@@ -219,15 +220,15 @@ function pesquisar($conexao, $destino)
 
                 <div class="info-viagem">
                     <?php echo "<h3>" . $viagem['destino'] . "</h3>"; ?>
-                    <p>Data: <?= date('d/m/Y', strtotime($viagem['data_inicio'])); ?></p>
-                    <p>Nota: <?= $viagem['avaliacao']; ?></p>
+                    <p>Data: <?php echo date('d/m/Y', strtotime($viagem['data_inicio'])); ?></p>
+                    <p>Nota: <?php echo $viagem['avaliacao']; ?></p>
 
                     <a href="detalhes_viagem.php?id=<?php echo $viagem['id']; ?>" class="ver-mais">Ver mais</a>
                     <?php echo "<hr>"; ?>
                 </div>
             </div>
-<?php
 
+<?php
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     } catch (PDOException $e) {
@@ -235,38 +236,76 @@ function pesquisar($conexao, $destino)
         return [];
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * Apaga uma viagem específica confirmando o ID do usuário
- */
-function apagar_viagem($conexao, $id, $usuario_id)
+// Função que pesquisa e mostra os espaços com o botão de confirmação de exclusão
+function pesquisar_para_excluir($conexao, $destino)
 {
-    $sql = "DELETE FROM viagens WHERE id = :id AND usuario_id = :usuario_id";
+    $id_usuario = $_SESSION['id_usuario'];
+    $sql = "SELECT * FROM viagens WHERE id_usuario = :id_usuario AND destino ILIKE :destino ORDER BY data_inicio DESC";
+
+    try {
+        $stmt = $conexao->prepare($sql);
+        $termo = '%' . $destino . '%';
+        $stmt->bindParam(':id_usuario', $id_usuario);
+        $stmt->bindParam(':destino', $termo);
+        $stmt->execute();
+
+        $viagens = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (empty($viagens)) {
+            echo "<p>Nenhuma viagem encontrada para este destino.</p>";
+            return;
+        }
+
+        foreach ($viagens as $viagem) {
+            ?>
+            <div class="espaço-viagem">
+                <div class="caixa-imagem">
+                    <span>Imagem</span>
+                </div>
+
+                <div class="info-viagem">
+                    <h3><?= htmlspecialchars($viagem['destino']); ?></h3>
+                    <p>Data: <?= date('d/m/Y', strtotime($viagem['data_inicio'])); ?></p>
+                    <p>Nota: <?= $viagem['avaliacao']; ?></p>
+
+                    <!-- Formulário individual de exclusão com alerta de confirmação -->
+                    <form action="" method="POST" onsubmit="return confirm('Tem certeza que deseja apagar o relato dessa viagem?');">
+                        <input type="hidden" name="id_viagem" value="<?= $viagem['id']; ?>">
+                        <input type="hidden" name="acao" value="excluir">
+                        <input type="submit" value="Excluir relato" class="btn-excluir">
+                    </form>
+                    <hr>
+                </div>
+            </div>
+            <?php
+        }
+    } catch (PDOException $e) {
+        echo "<p>Erro ao buscar viagens para exclusão.</p>";
+    }
+}
+
+// excluir: Função para excluir um relato da viagem pelo ID, confirmando o usuário logado
+function excluir($conexao, $id, $id_usuario)
+{
+    // Primeiro exclui as imagens associadas (se existirem na tabela fotos_viagem)
+    $sql_fotos = "DELETE FROM fotos_viagem WHERE id_viagem = :id";
+    $stmt_fotos = $conexao->prepare($sql_fotos);
+    $stmt_fotos->bindParam(':id', $id);
+    $stmt_fotos->execute();
+
+    // Depois exclui a viagem
+    $sql = "DELETE FROM viagens WHERE id = :id AND id_usuario = :id_usuario";
 
     try {
         $stmt = $conexao->prepare($sql);
         $stmt->bindParam(":id", $id);
-        $stmt->bindParam(":usuario_id", $usuario_id);
-        $stmt->execute();
+        $stmt->bindParam(":id_usuario", $id_usuario);
 
-        echo "<p class='alerta sucesso'>Viagem removida com sucesso!</p>";
+        if ($stmt->execute()) {
+            echo "<p style='color: green;'>Viagem apagada com sucesso!</p>";
+        }
     } catch (PDOException $e) {
-        echo "<p class='alerta erro'>Erro ao apagar viagem: " . $e->getMessage() . "</p>";
+        echo "<p style='color: red;'>Erro ao apagar viagem: " . $e->getMessage() . "</p>";
     }
 }
 ?>

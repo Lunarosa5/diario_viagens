@@ -1,7 +1,8 @@
 <?php
 session_start();
 require_once __DIR__ . '/../includes/functions.php';
-require_once __DIR__ . '/../login/verifica_user.php'; 
+require_once __DIR__ . '/../login/verifica_user.php';
+require_once __DIR__ . '/../database/connect.php';
 ?>
 
 <!DOCTYPE html>
@@ -25,8 +26,6 @@ require_once __DIR__ . '/../login/verifica_user.php';
         <?php
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             pesquisar($conexao, $_POST['destino']);
-            echo "<h2>Resultados da pesquisa:</h2>";
-            
         }
         ?>
     </main>

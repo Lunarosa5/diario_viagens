@@ -169,6 +169,8 @@ function relatorio($conexao)
 
         // Exibe cada viagem em um espaço, mostrando o destino, a data de início e a nota. Também inclui um link para ver mais detalhes da viagem.
         foreach ($viagens as $viagem) {
+            $fotos = buscar_fotos_viagem($conexao, $viagem['id']);
+            $src = !empty($fotos) ? '../uploads/' . $fotos[0]['nome_arquivo'] : '../images/sem-foto.png';
 ?>
             <div class="espaço-viagem">
                 <div class="caixa-imagem">

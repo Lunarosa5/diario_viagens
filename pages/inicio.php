@@ -2,7 +2,6 @@
 require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/../login/verifica_user.php';
 
-
 // Pega o ID do usuário que está logado
 $id_usuario = $_SESSION['id_usuario'];
 
@@ -19,7 +18,6 @@ if ($dados['media_notas']) {
     $media_notas = '0';
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -37,9 +35,6 @@ if ($dados['media_notas']) {
         <div class="espaco-dashboard">
             <h3>Total de viagens:</h3>
             <p class="valor-espaco"><?php echo $dados['total_viagens'] ?? 0; ?></p>
-
-            <!-- ?? 0: serve para evitar que o PHP mostre um aviso de erro na tela quando o valor for nulo ou não existir. -->
-
         </div>
 
         <div class="espaco-dashboard">
@@ -61,28 +56,39 @@ if ($dados['media_notas']) {
             <!-- Espaço para mostrar as últimas viagens relatadas pelo usuário -->
             <div class="viagens">
 
-                <!-- Se não houver viagens, mostra uma mensagem -->
+                <!-- Se houver viagens, exibe o loop -->
                 <?php if (!empty($ultimas_viagens)): ?>
 
-                    <!-- Loop para mostrar cada viagem -->
-                    <?php foreach ($ultimas_viagens as $viagem): ?>
+                    <?php foreach ($ultimas_viagens as $viagem): 
+                        // Busca as fotos salvas para esta viagem
+                        $fotos = buscar_fotos_viagem($conexao, $viagem['id']);
+                        
+                        // Define o caminho da imagem de capa (primeira foto enviada ou placeholder)
+                        if (!empty($fotos)) {
+                            $caminho_imagem = '../uploads/' . $fotos[0]['nome_arquivo'];
+                        } else {
+                            $caminho_imagem = '../css/placeholder.png';
+                        }
+                    ?>
                         <div class="espaco-viagem">
                             <div class="imagem-viagem">
-                                <img src="<?php echo !empty($viagem['imagem']) ? $viagem['imagem'] : '../css/placeholder.png'; ?>" alt="Foto da viagem">
+                                <img src="<?php echo htmlspecialchars($caminho_imagem); ?>" alt="Foto da viagem">
                             </div>
 
                             <div class="info-viagem">
-                                <p><strong>Local:</strong> <?php echo ($viagem['destino']); ?></p>
+                                <p><strong>Local:</strong> <?php echo htmlspecialchars($viagem['destino']); ?></p>
                                 <p><strong>Data:</strong> <?php echo date('d/m/Y', strtotime($viagem['data_inicio'])); ?></p>
-                                <p><strong>Nota:</strong> <?php echo $viagem['avaliacao']; ?></p>
+                                <p><strong>Nota:</strong> <?php echo htmlspecialchars($viagem['avaliacao']); ?></p>
 
-                                <a href="viagens.php?id=<?php echo $viagem['id']; ?>" class="btn-ver-mais">Ver mais</a>
+                                <a href="detalhes_viagem.php?id=<?php echo $viagem['id']; ?>" class="btn-ver-mais">Ver mais</a>
                             </div>
                         </div>
                     <?php endforeach; ?>
+
                 <?php else: ?>
                     <p>Nenhuma viagem cadastrada ainda.</p>
                 <?php endif; ?>
+
             </div>
         </section>
     </main>

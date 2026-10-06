@@ -1,6 +1,8 @@
 <?php
 // cadastro.php: interface de cadastro
 
+
+// Inicia a sessão do usuário, permitindo que a aplicação armazene informações do usuário durante a navegação
 session_start();
 
 // Inclui o arquivo das funções e do banco de dados
@@ -15,8 +17,7 @@ require_once __DIR__ . '/../includes/functions.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faça seu cadastro - Travely</title>
-    <!-- Caminho relativo para a pasta css/ -->
-    <link rel="stylesheet" href="../css/style.css">
+
 </head>
 
 <body class="fundo">
@@ -26,7 +27,9 @@ require_once __DIR__ . '/../includes/functions.php';
         <div class="lado-form">
             <h2>Faça seu cadastro</h2>
 
+            <!-- O formulário envia os dados do usuário para a mesma página (cadastro.php) usando o método POST. -->
             <form action="" method="POST">
+                
                 <div class="campo">
                     <label for="nome">Nome de usuário:</label>
                     <input type="text" name="nome" id="nome" placeholder="Insira seu nome" required>
@@ -48,7 +51,7 @@ require_once __DIR__ . '/../includes/functions.php';
             <?php
             // Quando o formulário é enviado por POST
             if ($_SERVER['REQUEST_METHOD'] == "POST") {
-                // Executa a função. Se der certo (true), redireciona para a tela de início
+                // Executa a função. Se der certo, redireciona para a tela de início
                 if (cadastrar_user($conexao, $_POST['nome'], $_POST['email'], $_POST['senha'])) {
                     header("Location: ../pages/inicio.php");
                     exit();
@@ -60,7 +63,7 @@ require_once __DIR__ . '/../includes/functions.php';
             <p class="texto-voltar"><a href="../index.php"> Voltar para a tela inicial</a></p>
         </div>
 
-        <!-- Lado Direito: Imagem -->
+        <!-- Lado Direito - Imagem -->
         <div class="lado-imagem">
             <div class="caixa-imagem">
                 <span>Imagem</span>

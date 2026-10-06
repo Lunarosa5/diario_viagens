@@ -58,7 +58,7 @@ require_once __DIR__ . '/../includes/functions.php';
                 } else {
                     
                     // Caso alguma das informações estiverem incorretas, uma mensagem é exibida
-                    echo "<p class='alerta erro'>Usuário ou senha inválidos.</p>";
+                    echo "<p class='alerta erro'>E-mail ou senha inválidos.</p>";
                 }
             }
             ?>

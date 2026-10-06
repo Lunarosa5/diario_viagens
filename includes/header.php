@@ -17,12 +17,12 @@ $nome_exibicao = isset($_SESSION['usuario_nome']) ? $_SESSION['usuario_nome'] : 
             </div>
 
             <div class="opcoes">
-                <a href="inicio.php">Início</a>
-                <a href="adicionar.php">Adicionar</a>
-                <a href="viagens.php">Viagens</a>
-                <a href="pesquisar.php">Pesquisar</a>
-                <a href="excluir.php">Excluir</a>
-                <a href="atualizar.php">Atualizar</a>
+                <a href="../pages/inicio.php">Início</a>
+                <a href="../pages/adicionar.php">Adicionar</a>
+                <a href="../pages/viagens.php">Viagens</a>
+                <a href="../pages/pesquisar.php">Pesquisar</a>
+                <a href="../pages/excluir.php">Excluir</a>
+                <a href="../pages/atualizar.php">Atualizar</a>
             </div>
 
             <div class="perfil">

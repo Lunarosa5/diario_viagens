@@ -1,11 +1,7 @@
 <?php
 // cadastro.php: interface de cadastro
-
-
-// Inicia a sessão do usuário, permitindo que a aplicação armazene informações do usuário durante a navegação
 session_start();
 
-// Inclui o arquivo das funções e do banco de dados
 require_once __DIR__ . '/../database/connect.php';
 require_once __DIR__ . '/../includes/functions.php';
 ?>
@@ -17,60 +13,57 @@ require_once __DIR__ . '/../includes/functions.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faça seu cadastro - Travely</title>
-
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
-<body class="fundo">
-    <div class="lado-form">
+<body class="fundo-cadastro">
 
-        <!-- Formulário de Cadastro -->
-        <div class="lado-form">
+    <!-- Lado Esquerdo - Formulário (Metade da Tela) -->
+    <div class="cadastro-lado-form">
+        
+        <!-- Botão de Voltar no canto superior esquerdo -->
+        <a href="../index.php" class="cadastro-botao-voltar">⬅ Voltar</a>
+
+        <div class="cadastro-conteudo-central">
             <h2>Faça seu cadastro</h2>
 
-            <!-- O formulário envia os dados do usuário para a mesma página (cadastro.php) usando o método POST. -->
             <form action="" method="POST">
                 
-                <div class="campo">
-                    <label for="nome">Nome de usuário:</label>
+                <div class="cadastro-campo">
+                    <label for="nome">Nome de usuario:</label>
                     <input type="text" name="nome" id="nome" placeholder="Insira seu nome" required>
                 </div>
 
-                <div class="campo">
+                <div class="cadastro-campo">
                     <label for="email">E-mail:</label>
-                    <input type="email" name="email" id="email" placeholder="Insira seu e-mail" required>
+                    <input type="email" name="email" id="email" placeholder="Insira seu email" required>
                 </div>
 
-                <div class="campo">
+                <div class="cadastro-campo">
                     <label for="senha">Senha:</label>
                     <input type="password" name="senha" id="senha" placeholder="Crie uma senha" required>
                 </div>
 
-                <input type="submit" value="Cadastrar" class="botao-submit">
+                <div class="cadastro-container-submit">
+                    <input type="submit" value="Cadastrar" class="cadastro-botao-submit">
+                </div>
+
             </form>
 
             <?php
-            // Quando o formulário é enviado por POST
             if ($_SERVER['REQUEST_METHOD'] == "POST") {
-                // Executa a função. Se der certo, redireciona para a tela de início
                 if (cadastrar_user($conexao, $_POST['nome'], $_POST['email'], $_POST['senha'])) {
                     header("Location: ../pages/inicio.php");
                     exit();
                 }
             }
             ?>
-
-            <!-- Botão de Voltar para a Página Inicial -->
-            <p class="texto-voltar"><a href="../index.php"> Voltar para a tela inicial</a></p>
-        </div>
-
-        <!-- Lado Direito - Imagem -->
-        <div class="lado-imagem">
-            <div class="caixa-imagem">
-                <span>Imagem</span>
-            </div>
         </div>
 
     </div>
+
+    <!-- Lado Direito - Imagem (Outra Metade da Tela) -->
+    <div class="cadastro-lado-imagem"></div>
 
 </body>
 

@@ -1,6 +1,5 @@
 <?php
 // index.php: Tela de entrada do sistema
-
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -8,24 +7,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travely</title>
-    
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="fundo">
 
-    <!-- Caixa principal no meio da tela -->
+    <!-- Moldura externa com a imagem ilustrativa de fundo -->
     <div class="caixa-principal">
-        <h1>Travely</h1>
-        
-        <!-- Caixa sobre o sistema -->
+
+        <!-- Card interno com efeito Glassmorphism / Blur -->
         <div class="caixa-sobre">
+            
+            <!-- Espaço do Logo Travely com o aviãozinho -->
+            <div class="logo-imagem"></div>
+
+            <!-- Texto descritivo central -->
             <p>Seja muito bem-vindo(a) ao Travely! <br> Guarde suas memórias de viagens, fotos e relatos em um só lugar.</p>
+
+            <!-- Botões -->
+            <div class="botoes">
+                <a href="login/login.php" class="login">Login</a>
+                <a href="login/cadastro.php" class="cadastro">Cadastre-se</a>
+            </div>
+
         </div>
 
-        <!-- Botões para navegar até as páginas de Login e Cadastro -->
-        <div class="botoes">
-            <a href="login/login.php" class="login">Login</a>
-            <a href="login/cadastro.php" class="cadastro">Cadastre-se</a>
-        </div>
     </div>
 
 </body>

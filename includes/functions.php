@@ -390,7 +390,6 @@ function excluir_conta($conexao, $id_usuario)
 // FUNÇÕES DE UPLOAD DE IMAGENS:
 
 // foto_viagem: função para mover a foto para a pasta uploads e salvar no banco de dados
-// foto_viagem: função para mover a foto para a pasta uploads e salvar no banco de dados
 function foto_viagem($conexao, $id_viagem, $arquivo)
 {
     // Se o usuário não selecionou nenhuma foto no formulário, não faz nada
@@ -416,7 +415,6 @@ function foto_viagem($conexao, $id_viagem, $arquivo)
 // Função para buscar as fotos de uma viagem
 function buscar_fotos_viagem($conexao, $id_viagem)
 {
-    // Nome correto da tabela: fotos_viagem
     $sql = "SELECT nome_arquivo FROM fotos_viagem WHERE id_viagem = :id_viagem ORDER BY id ASC";
     try {
         $stmt = $conexao->prepare($sql);

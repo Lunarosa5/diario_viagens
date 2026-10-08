@@ -144,6 +144,7 @@ function cadastrar_viagem($conexao, $id_usuario, $titulo, $destino, $data_inicio
 }
 
 // relatorio: Função para possibilitar o usuário de ver todas suas viagens relatadas
+// relatorio: Procura e retorna todas as viagens cadastradas pelo usuário logado
 function relatorio($conexao)
 {
     $id_usuario = $_SESSION['id_usuario'];
@@ -153,35 +154,11 @@ function relatorio($conexao)
         $stmt = $conexao->prepare($sql);
         $stmt->bindParam(':id_usuario', $id_usuario);
         $stmt->execute();
-        $viagens = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        if (empty($viagens)) {
-            echo "<p>Você ainda não tem viagens cadastradas.</p>";
-            return;
-        }
-
-        foreach ($viagens as $viagem) {
-            $fotos = buscar_fotos_viagem($conexao, $viagem['id']);
-            $src = !empty($fotos) ? '../uploads/' . $fotos[0]['nome_arquivo'] : '../images/sem-foto.png';
-?>
-            <div class="espaço-viagem">
-                <div class="caixa-imagem">
-                    <img src="<?= htmlspecialchars($src); ?>" alt="Foto de <?= htmlspecialchars($viagem['destino']); ?>">
-                </div>
-
-                <div class="info-viagem">
-                    <h3><?= htmlspecialchars($viagem['destino']); ?></h3>
-                    <p>Data: <?= date('d/m/Y', strtotime($viagem['data_inicio'])); ?></p>
-                    <p>Nota: <?= htmlspecialchars($viagem['avaliacao']); ?></p>
-
-                    <a href="detalhes_viagem.php?id=<?= $viagem['id']; ?>" class="ver-mais">Ver mais</a>
-                    <hr>
-                </div>
-            </div>
-        <?php
-        }
+        
+        // Retorna o array associativo com todas as viagens encontradas
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
-        echo "<p>Erro ao exibir viagens.</p>";
+        return [];
     }
 }
 

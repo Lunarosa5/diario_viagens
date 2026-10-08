@@ -12,8 +12,7 @@ $nome_exibicao = isset($_SESSION['usuario_nome']) ? $_SESSION['usuario_nome'] : 
         <!-- Logo e opções -->
         <nav class="menu-navegacao">
             <div class="logo">
-                <img src="" alt="Logo Travely" class="img-logo">
-                <strong>Travely</strong>
+                <img src="../images/logo_bege.png" alt="Logo Travely" class="img-logo">
             </div>
 
             <div class="opcoes">
@@ -30,6 +29,5 @@ $nome_exibicao = isset($_SESSION['usuario_nome']) ? $_SESSION['usuario_nome'] : 
                 <a href="../login/logout.php" class="sair">Sair</a>
             </div>
         </nav>
-        <hr>
     </div>
 </header>

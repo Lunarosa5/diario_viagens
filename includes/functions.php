@@ -162,7 +162,7 @@ function relatorio($conexao)
     }
 }
 
-// pesquisar_opcoes: Busca e retorna as viagens encontradas pelo destino para tratamento nas páginas
+// pesquisar_opcoes: Busca e retorna as viagens encontradas pelo destino
 function pesquisar_opcoes($conexao, $destino)
 {
     $id_usuario = $_SESSION['id_usuario'];
@@ -174,7 +174,6 @@ function pesquisar_opcoes($conexao, $destino)
         $stmt->bindParam(':id_usuario', $id_usuario);
         $stmt->bindParam(':destino', $termo);
         $stmt->execute();
-
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         return [];

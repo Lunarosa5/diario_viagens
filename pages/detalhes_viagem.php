@@ -19,9 +19,12 @@ $origem = isset($_GET['origem']) ? $_GET['origem'] : 'viagens';
 
 if ($origem === 'inicio') {
     $link_voltar = 'inicio.php';
-} else {
-    $link_voltar = 'viagens.php';
-}
+} elseif ($origem === 'pesquisar.php') {
+    $link_voltar = 'pesquisar.php';
+} elseif ($origem === 'excluir.php') {
+    $link_voltar = 'excluir.php';
+} elseif ($origem === 'atualizar.php') {
+    $link_voltar = 'atualizar.php'; }
 
 // 3. Busca a viagem no banco de dados
 $sql = "SELECT * FROM viagens WHERE id = :id AND id_usuario = :id_usuario";
@@ -68,12 +71,12 @@ $total_fotos = count($lista_fotos);
 
         <main class="dashboard-conteudo-detalhes">
             <!-- Botão Voltar -->
-            <a href="<?php echo $link_voltar; ?>" class="btn-voltar-link">&#129144; Voltar</a>
+            <a href="<?php echo $link_voltar; ?>" class="btn-voltar-link">⬅ Voltar</a>
 
             <h1 class="titulo-detalhe-viagem"><?php echo htmlspecialchars($viagem['titulo']); ?></h1>
 
             <div class="card-detalhe-container">
-                <!-- Lado Esquerdo: Carrossel de Fotos em CSS Puro -->
+                
                 <div class="carrossel-css">
                     <?php for ($i = 0; $i < $total_fotos; $i++): ?>
                         <input type="radio" name="carrossel_foto" id="foto-<?= $i; ?>" <?= ($i === 0) ? 'checked' : ''; ?>>
@@ -100,7 +103,7 @@ $total_fotos = count($lista_fotos);
                     <?php endif; ?>
                 </div>
 
-                <!-- Lado Direito: Informações em Pílulas e Relato -->
+                
                 <div class="info-detalhe-conteudo">
                     <div class="campo-info">
                         <h3>Data:</h3>

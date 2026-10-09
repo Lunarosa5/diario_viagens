@@ -1082,4 +1082,153 @@ footer.rodape {
     resize: vertical;
     outline: none;
 }
+
+/* ======================================================= */
+/*                     PESQUISAR.PHP                       */
+/* ======================================================= */
+
+.dashboard-conteudo-pesquisar {
+    flex: 1;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Formulário de Pesquisa Lado a Lado */
+.form-pesquisa {
+    margin-bottom: 35px;
+}
+
+.campo-pesquisa-grupo {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    width: 100%;
+}
+
+.input-pesquisa {
+    flex: 1;
+    padding: 14px 20px;
+    border: 3px solid #0d8c97;
+    border-radius: 12px;
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: #0d8c97;
+    background-color: #fef9f3;
+    outline: none;
+    box-shadow: 0 4px 8px rgba(13, 140, 151, 0.1);
+}
+
+.input-pesquisa::placeholder {
+    color: #79c3c9;
+    font-weight: bold;
+}
+
+.btn-buscar {
+    background-color: #0d8c97;
+    color: #ffffff;
+    font-size: 1.3rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 45px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    box-shadow: 0 4px 8px rgba(13, 140, 151, 0.2);
+}
+
+.btn-buscar:hover {
+    background-color: #0a6f78;
+}
+
+/* Container de Resultados em Grelha (2 cartões por linha) */
+.resultado-pesquisa-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+/* Cartões de Resultados (gerados pela função pesquisar()) */
+.resultado-pesquisa-container .espaço-viagem {
+    background-color: #fef9f3;
+    border: 3px solid #0d8c97;
+    border-radius: 18px;
+    padding: 18px;
+    display: flex;
+    gap: 20px;
+    width: calc(50% - 13px); /* 2 cartões por linha */
+    box-sizing: border-box;
+    align-items: center;
+    box-shadow: 0 6px 12px rgba(13, 140, 151, 0.12);
+}
+
+.resultado-pesquisa-container .caixa-imagem {
+    width: 150px;
+    height: 110px;
+    border: 2.5px solid #0d8c97;
+    border-radius: 14px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background-color: #ffffff;
+}
+
+.resultado-pesquisa-container .caixa-imagem img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.resultado-pesquisa-container .info-viagem {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.resultado-pesquisa-container .info-viagem h3 {
+    color: #0d8c97;
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 0 0 6px 0;
+}
+
+.resultado-pesquisa-container .info-viagem p {
+    color: #0d8c97;
+    font-weight: bold;
+    font-size: 0.95rem;
+    margin: 2px 0;
+}
+
+.resultado-pesquisa-container .ver-mais {
+    display: inline-block;
+    align-self: flex-start;
+    background-color: #0d8c97;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 0.95rem;
+    padding: 8px 24px;
+    border-radius: 12px;
+    text-decoration: none;
+    margin-top: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.resultado-pesquisa-container .ver-mais:hover {
+    background-color: #0a6f78;
+}
+
+/* Oculta a linha <hr> gerada dentro da função original */
+.resultado-pesquisa-container hr {
+    display: none;
+}
+
+.sem-viagens {
+    width: 100%;
+    text-align: center;
+    color: #0d8c97;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-top: 30px;
 }

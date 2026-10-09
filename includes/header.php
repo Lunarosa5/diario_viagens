@@ -1,11 +1,3 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-$nome_exibicao = isset($_SESSION['usuario_nome']) ? $_SESSION['usuario_nome'] : 'usuário';
-?>
-
 <header class="cabecalho">
     <div class="container-header">
 

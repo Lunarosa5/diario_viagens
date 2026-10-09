@@ -1,5 +1,6 @@
 <?php 
 // login.php: interface de login, verificação de senha e criação da Sessão
+require_once __DIR__ . '/../database/connect.php';
 require_once __DIR__ . '/../includes/functions.php';
 ?>
 

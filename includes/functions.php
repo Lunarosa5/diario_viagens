@@ -143,12 +143,12 @@ function cadastrar_viagem($conexao, $id_usuario, $titulo, $destino, $data_inicio
     }
 }
 
-// relatorio: Função para possibilitar o usuário de ver todas suas viagens relatadas
-// relatorio: Procura e retorna todas as viagens cadastradas pelo usuário logado
+// relatorio: Função para possibilitar o usuário de ver todas suas viagens relatadas (da cadastrada mais recentemente para a mais antiga)
 function relatorio($conexao)
 {
     $id_usuario = $_SESSION['id_usuario'];
-    $sql = "SELECT * FROM viagens WHERE id_usuario = :id_usuario ORDER BY data_inicio DESC";
+    // Ordena pelo ID em ordem decrescente (a última cadastrada fica em primeiro lugar)
+    $sql = "SELECT * FROM viagens WHERE id_usuario = :id_usuario ORDER BY id DESC";
 
     try {
         $stmt = $conexao->prepare($sql);
@@ -159,51 +159,6 @@ function relatorio($conexao)
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         return [];
-    }
-}
-
-// pesquisar: Função para pesquisar viagens por destino
-function pesquisar($conexao, $destino)
-{
-    $id_usuario = $_SESSION['id_usuario'];
-    $sql = "SELECT * FROM viagens WHERE id_usuario = :id_usuario AND destino ILIKE :destino ORDER BY data_inicio DESC";
-
-    try {
-        $stmt = $conexao->prepare($sql);
-        $termo = '%' . $destino . '%';
-        $stmt->bindParam(':id_usuario', $id_usuario);
-        $stmt->bindParam(':destino', $termo);
-        $stmt->execute();
-
-        $viagens = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        if (empty($viagens)) {
-            echo "<p>Nenhuma viagem encontrada para este destino.</p>";
-            return;
-        }
-
-        foreach ($viagens as $viagem) {
-            $fotos = buscar_fotos_viagem($conexao, $viagem['id']);
-            $src = !empty($fotos) ? '../uploads/' . $fotos[0]['nome_arquivo'] : '../images/sem-foto.png';
-        ?>
-            <div class="espaço-viagem">
-                <div class="caixa-imagem">
-                    <img src="<?= htmlspecialchars($src); ?>" alt="Foto de <?= htmlspecialchars($viagem['destino']); ?>">
-                </div>
-
-                <div class="info-viagem">
-                    <h3><?= htmlspecialchars($viagem['destino']); ?></h3>
-                    <p>Data: <?= date('d/m/Y', strtotime($viagem['data_inicio'])); ?></p>
-                    <p>Nota: <?= htmlspecialchars($viagem['avaliacao']); ?></p>
-
-                    <a href="detalhes_viagem.php?id=<?= $viagem['id']; ?>" class="ver-mais">Ver mais</a>
-                    <hr>
-                </div>
-            </div>
-<?php
-        }
-    } catch (PDOException $e) {
-        echo "<p>Erro ao pesquisar viagens: " . $e->getMessage() . "</p>";
     }
 }
 
@@ -366,26 +321,54 @@ function excluir_conta($conexao, $id_usuario)
 
 // FUNÇÕES DE UPLOAD DE IMAGENS:
 
-// foto_viagem: função para mover a foto para a pasta uploads e salvar no banco de dados
+
+// foto_viagem: função para mover até 10 fotos para a pasta uploads e salvar no banco de dados
 function foto_viagem($conexao, $id_viagem, $arquivo)
 {
-    // Se o usuário não selecionou nenhuma foto no formulário, não faz nada
+    // Se não houver arquivo enviado, encerra a função
     if (empty($arquivo['name'])) {
         return;
     }
 
-    $extensao = pathinfo($arquivo['name'], PATHINFO_EXTENSION);
-    $novo_nome = "foto_" . time() . "." . $extensao;
-    $destino = __DIR__ . '/../uploads/' . $novo_nome;
+    // Se $arquivo['name'] for um array (múltiplas fotos), processa em loop
+    if (is_array($arquivo['name'])) {
+        if (empty($arquivo['name'][0])) {
+            return;
+        }
 
-    if (move_uploaded_file($arquivo['tmp_name'], $destino)) {
+        $total_enviados = count($arquivo['name']);
+        $limite = min($total_enviados, 10);
 
-        // Nome correto da tabela: fotos_viagem
-        $sql = "INSERT INTO fotos_viagem (id_viagem, nome_arquivo) VALUES (:id_viagem, :nome_arquivo)";
-        $stmt = $conexao->prepare($sql);
-        $stmt->bindValue(':id_viagem', (int)$id_viagem, PDO::PARAM_INT);
-        $stmt->bindParam(':nome_arquivo', $novo_nome);
-        $stmt->execute();
+        for ($i = 0; $i < $limite; $i++) {
+            if (isset($arquivo['error'][$i]) && $arquivo['error'][$i] === UPLOAD_ERR_OK) {
+                $extensao = pathinfo($arquivo['name'][$i], PATHINFO_EXTENSION);
+                $novo_nome = "foto_" . time() . "_{$i}." . $extensao;
+                $destino = __DIR__ . '/../uploads/' . $novo_nome;
+
+                if (move_uploaded_file($arquivo['tmp_name'][$i], $destino)) {
+                    $sql = "INSERT INTO fotos_viagem (id_viagem, nome_arquivo) VALUES (:id_viagem, :nome_arquivo)";
+                    $stmt = $conexao->prepare($sql);
+                    $stmt->bindValue(':id_viagem', (int)$id_viagem, PDO::PARAM_INT);
+                    $stmt->bindParam(':nome_arquivo', $novo_nome);
+                    $stmt->execute();
+                }
+            }
+        }
+    } else {
+        // Se $arquivo['name'] for uma string simples (apenas 1 foto)
+        if ($arquivo['error'] === UPLOAD_ERR_OK) {
+            $extensao = pathinfo($arquivo['name'], PATHINFO_EXTENSION);
+            $novo_nome = "foto_" . time() . "." . $extensao;
+            $destino = __DIR__ . '/../uploads/' . $novo_nome;
+
+            if (move_uploaded_file($arquivo['tmp_name'], $destino)) {
+                $sql = "INSERT INTO fotos_viagem (id_viagem, nome_arquivo) VALUES (:id_viagem, :nome_arquivo)";
+                $stmt = $conexao->prepare($sql);
+                $stmt->bindValue(':id_viagem', (int)$id_viagem, PDO::PARAM_INT);
+                $stmt->bindParam(':nome_arquivo', $novo_nome);
+                $stmt->execute();
+            }
+        }
     }
 }
 

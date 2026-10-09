@@ -15,7 +15,7 @@ $hoje = date('Y-m-d');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar Nova Viagem - Travely</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href= "../css/style.css">
 </head>
 
 <body class="fundo-dashboard">
@@ -43,7 +43,7 @@ $hoje = date('Y-m-d');
                 );
 
                 if ($id_viagem_criada) {
-                    if (!empty($_FILES['imagem']['name'])) {
+                    if (!empty($_FILES['imagem']['name'][0])) {
                         foto_viagem($conexao, $id_viagem_criada, $_FILES['imagem']);
                     }
 
@@ -85,7 +85,7 @@ $hoje = date('Y-m-d');
                     <!-- Foto e Nota Lado a Lado -->
                     <div class="campo-form metade">
                         <label for="imagem">Adicione uma foto da viagem:</label>
-                        <input type="file" name="imagem" id="imagem" accept="image/*">
+                        <input type="file" name="imagem[]" id="imagem" accept="image/*" multiple>
                     </div>
 
                     <div class="campo-form metade">

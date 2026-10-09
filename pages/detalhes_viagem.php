@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/../login/verifica_user.php';
@@ -37,9 +37,19 @@ if (!$viagem) {
     exit();
 }
 
-// 4. Busca a foto cadastrada ou a foto padrão sem_imagem.png
+// 4. Busca as fotos cadastradas ou a foto padrão sem_imagem.png
 $fotos = buscar_fotos_viagem($conexao, $viagem['id']);
-$caminho_imagem = !empty($fotos) ? '../uploads/' . $fotos[0]['nome_arquivo'] : '../images/sem_imagem.png';
+$lista_fotos = [];
+
+if (!empty($fotos)) {
+    foreach ($fotos as $f) {
+        $lista_fotos[] = '../uploads/' . $f['nome_arquivo'];
+    }
+} else {
+    $lista_fotos[] = '../images/sem_imagem.png';
+}
+
+$total_fotos = count($lista_fotos);
 ?>
 
 <!DOCTYPE html>
@@ -56,32 +66,62 @@ $caminho_imagem = !empty($fotos) ? '../uploads/' . $fotos[0]['nome_arquivo'] : '
     <div class="dashboard-container">
         <?php include __DIR__ . '/../includes/header.php'; ?>
 
-        <main class="detalhes-viagem">
-            <h1><?php echo htmlspecialchars($viagem['titulo']); ?></h1>
+        <main class="dashboard-conteudo-detalhes">
+            <!-- Botão Voltar -->
+            <a href="<?php echo $link_voltar; ?>" class="btn-voltar-link">&#129144; Voltar</a>
 
-            <!-- O link do botão Voltar agora muda dinamicamente conforme a origem -->
-            <a href="<?php echo $link_voltar; ?>" class="btn-ver-mais">Voltar</a>
+            <h1 class="titulo-detalhe-viagem"><?php echo htmlspecialchars($viagem['titulo']); ?></h1>
 
-            <div class="detalhes">
-                <!-- Lado Esquerdo: Imagem da Viagem -->
-                <div class="foto-detalhe">
-                    <img src="<?php echo htmlspecialchars($caminho_imagem); ?>" 
-                         alt="Foto de <?php echo htmlspecialchars($viagem['destino']); ?>">
+            <div class="card-detalhe-container">
+                <!-- Lado Esquerdo: Carrossel de Fotos em CSS Puro -->
+                <div class="carrossel-css">
+                    <?php for ($i = 0; $i < $total_fotos; $i++): ?>
+                        <input type="radio" name="carrossel_foto" id="foto-<?= $i; ?>" <?= ($i === 0) ? 'checked' : ''; ?>>
+                    <?php endfor; ?>
+
+                    <div class="foto-detalhe-caixa">
+                        <?php foreach ($lista_fotos as $index => $caminho): ?>
+                            <img src="<?php echo htmlspecialchars($caminho); ?>" alt="Foto de <?php echo htmlspecialchars($viagem['destino']); ?>" class="slide-foto foto-<?= $index; ?>">
+                        <?php endforeach; ?>
+                    </div>
+
+                    <?php if ($total_fotos > 1): ?>
+                        <div class="controles-setas">
+                            <?php for ($i = 0; $i < $total_fotos; $i++):
+                                $anterior = ($i - 1 + $total_fotos) % $total_fotos;
+                                $proxima = ($i + 1) % $total_fotos;
+                            ?>
+                                <div class="grupo-setas seta-grupo-<?= $i; ?>">
+                                    <label for="foto-<?= $anterior; ?>" class="seta-carrossel seta-esquerda">❬</label>
+                                    <label for="foto-<?= $proxima; ?>" class="seta-carrossel seta-direita">❭</label>
+                                </div>
+                            <?php endfor; ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
 
-                <!-- Lado Direito: Informações e Relato -->
-                <div class="info-detalhe">
-                    <p><strong>Data:</strong><br>
-                        <?php echo date('d/m/Y', strtotime($viagem['data_inicio'])); ?> - <?php echo date('d/m/Y', strtotime($viagem['data_fim'])); ?>
-                    </p>
+                <!-- Lado Direito: Informações em Pílulas e Relato -->
+                <div class="info-detalhe-conteudo">
+                    <div class="campo-info">
+                        <h3>Data:</h3>
+                        <div class="pilula-info">
+                            <?php echo date('d/m/Y', strtotime($viagem['data_inicio'])); ?> - <?php echo date('d/m/Y', strtotime($viagem['data_fim'])); ?>
+                        </div>
+                    </div>
 
-                    <p><strong>Avaliação:</strong><br>
-                        <?php echo htmlspecialchars($viagem['avaliacao']); ?>
-                    </p>
+                    <div class="campo-info">
+                        <h3>Avaliação:</h3>
+                        <div class="pilula-info pilula-curta">
+                            <?php echo htmlspecialchars($viagem['avaliacao']); ?>
+                        </div>
+                    </div>
 
-                    <p><strong>Relato:</strong><br>
-                        <?php echo nl2br(htmlspecialchars($viagem['relato'])); ?>
-                    </p>
+                    <div class="campo-info">
+                        <div class="campo-info">
+                            <h3>Relato:</h3>
+                            <textarea class="caixa-relato-info" rows="5" readonly><?php echo htmlspecialchars($viagem['relato']); ?></textarea>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>

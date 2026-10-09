@@ -839,3 +839,247 @@ footer.rodape {
     gap: 25px;
     margin-top: 20px;
 }
+
+/* ======================================================= */
+/*              DETALHES_VIAGEM E CARROSSEL                */
+/* ======================================================= */
+
+.dashboard-conteudo-detalhes {
+    flex: 1;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.btn-voltar-link {
+    display: inline-block;
+    color: #0d8c97;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.titulo-detalhe-viagem {
+    color: #0d8c97;
+    font-size: 2.4rem;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.card-detalhe-container {
+    background-color: #fef9f3;
+    border: 2.5px solid #0d8c97;
+    border-radius: 18px;
+    padding: 30px;
+    display: flex;
+    gap: 35px;
+    align-items: flex-start;
+    box-shadow: 0 8px 15px rgba(13, 140, 151, 0.15);
+}
+
+/* CARROSSEL CSS */
+.carrossel-css {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.carrossel-css input[type="radio"] {
+    display: none;
+}
+
+.foto-detalhe-caixa {
+    width: 260px;
+    height: 380px;
+    border: 2.5px solid #0d8c97;
+    border-radius: 16px;
+    background-color: #ffffff;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide-foto {
+    display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.grupo-setas {
+    display: none;
+}
+
+/* Regras do :checked para até 10 imagens */
+#foto-0:checked~.foto-detalhe-caixa .foto-0 {
+    display: block;
+}
+
+#foto-1:checked~.foto-detalhe-caixa .foto-1 {
+    display: block;
+}
+
+#foto-2:checked~.foto-detalhe-caixa .foto-2 {
+    display: block;
+}
+
+#foto-3:checked~.foto-detalhe-caixa .foto-3 {
+    display: block;
+}
+
+#foto-4:checked~.foto-detalhe-caixa .foto-4 {
+    display: block;
+}
+
+#foto-5:checked~.foto-detalhe-caixa .foto-5 {
+    display: block;
+}
+
+#foto-6:checked~.foto-detalhe-caixa .foto-6 {
+    display: block;
+}
+
+#foto-7:checked~.foto-detalhe-caixa .foto-7 {
+    display: block;
+}
+
+#foto-8:checked~.foto-detalhe-caixa .foto-8 {
+    display: block;
+}
+
+#foto-9:checked~.foto-detalhe-caixa .foto-9 {
+    display: block;
+}
+
+#foto-0:checked~.controles-setas .seta-grupo-0 {
+    display: block;
+}
+
+#foto-1:checked~.controles-setas .seta-grupo-1 {
+    display: block;
+}
+
+#foto-2:checked~.controles-setas .seta-grupo-2 {
+    display: block;
+}
+
+#foto-3:checked~.controles-setas .seta-grupo-3 {
+    display: block;
+}
+
+#foto-4:checked~.controles-setas .seta-grupo-4 {
+    display: block;
+}
+
+#foto-5:checked~.controles-setas .seta-grupo-5 {
+    display: block;
+}
+
+#foto-6:checked~.controles-setas .seta-grupo-6 {
+    display: block;
+}
+
+#foto-7:checked~.controles-setas .seta-grupo-7 {
+    display: block;
+}
+
+#foto-8:checked~.controles-setas .seta-grupo-8 {
+    display: block;
+}
+
+#foto-9:checked~.controles-setas .seta-grupo-9 {
+    display: block;
+}
+
+/* Estilo das Setas ❬ e ❭ */
+.seta-carrossel {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #0d8c97;
+    color: #ffffff;
+    border: 2.5px solid #ffffff;
+    font-size: 1.4rem;
+    font-weight: bold;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    user-select: none;
+}
+
+.seta-carrossel:hover {
+    background-color: #ffffff;
+    color: #0d8c97;
+    border-color: #0d8c97;
+}
+
+.seta-esquerda {
+    left: -18px;
+}
+
+.seta-direita {
+    right: -18px;
+}
+
+/* LADO DIREITO: PÍLULAS E TEXTOS (Com quebra automática para não estourar) */
+.info-detalhe-conteudo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    min-width: 0;
+    /* Impede estouro de flexbox */
+}
+
+.campo-info h3 {
+    color: #0d8c97;
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin: 0 0 6px 0;
+}
+
+.pilula-info {
+    background-color: #0d8c97;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 8px 22px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.pilula-info.pilula-curta {
+    padding: 8px 28px;
+}
+
+/* Campo Relato idêntico ao do formulário adicionar.php */
+.caixa-relato-info {
+    background-color: #0d8c97;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    padding: 12px 16px;
+    border-radius: 18px;
+    border: none;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+    resize: vertical;
+    outline: none;
+}
+}
